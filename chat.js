@@ -1,130 +1,46 @@
-const inputText = document.getElementById("text");
-var listado = document.createElement("ul"); 
-const display = document.getElementById("display")
-const bigger_display = document.getElementById("chatContent")
-const write_box = document.getElementById('text')
-const sendbtn = document.getElementById("button").addEventListener("click", function(){
-  send_message("52", inputText.value, "DC")
-})
 
-inputText.addEventListener("keypress", function(e){
-  var keyCode = e.keyCode;
-  if(keyCode == 13){
-      console.log("enter");
-      send_message('52',inputText.value,'DC')
-  }
-})
-//var myFetch = fetch('34.210.35.174');
+const url = 'http://34.210.35.174:7000'
+const message_section = document.getElementById('chatContent')
+const message = documnet.getElementById('text')
 
-const url = 'http://34.210.35.174:7000/'
-const id = '52'
-const nick = 'DC'
-	
+
 function get_messages(){
 	fetch(url)
-	.then(res => res.json())
-	.then(post => console.log(posts))
-	.then(function(messages){
-		messages.ForEach(function(message){
-			const div = create_element_local(messages.id, messages.nick, inputText.value)
-			aggregate(div, messages.text)
-		})
-		bigger_display.scrollTop = bigger_display.scrollHeight
+	.then(function(response){
+		return response.json();
 	})
+	.then(function(myJson){
+		console.log(myJson);
+
+		message_section.innerHTML = ""; 
+		for (var i = 0; i< myJson.length; i++){
+			//create element post and fill it up D:
+			var post = document.createTextNode(myJson[i].student_id + '-'+ myJson[i].nick + ': ' + myJson[i].text) 
+			var div = create_post(post); 
+
+			message_section.appendChild(div); 
+		}
+	});
 }
 
-function aggregate(divition, content){
-	//divition = div con nick y con id
-	//content = el mensaje a agregar
+function create_post(content){
+	var post_ccl = document.createElement('div')
+	post_ccl.style.width = '60%'
+	post_ccl.style.height = 'auto'
+	post_ccl.style.borderRadius = '10px'
 
-	var texto = document.createTextNode(content)
-	divition.appendChild(texto)
-
-	console.log(content)
-
-	var holder = document.createElement("li")
-	if(content.endsWith(".jpg")){
-		var imagen = document.createElement("img")
-		imagen.src = content
-		holder.appendChild(imagen)
-	}
-	else{
-		holder.appendChild(document.createTextNode(content))
-	}
-	display.appendChild(holder)
+	post_ccl.appendChild(content)
+	return post_ccl
 }
 
-const newPost = post => {
-	const options = {
-		method: 'POST', 
-		student_id: 'id', 
-		body: 'cuerpazo' 
-	}
-	return fetch(url)
+function send_message(){
+	var nick = 'DC'
+	var id = '15151'
+	var text = message.value; 
+
+	 
 }
 
-
-function send_message(id, text, nick) {
-	console.log(id)
-	console.log(text)
-	console.log(nick)
-	if(id === ""){
-		alert("No id was defined")
-		return 
-	}
-	if(nick === ""){
-		alert("No name was defined")
-		return 
-	}
-	if(text === ""){
-		alert("No message was written")
-		return 
-	}
-  
-	const struct = new FormData(); 
-	struct.append('student_id', id)
-	struct.append('text', text)
-	struct.append('nick', nick)
-
-	const post = {
-		method: 'POST', 
-		body: struct  
-	}
-	fetch(url, post)
-	.then(function(){
-		const div = create_element_local(id, nick)
-		aggregate(div, text)
-    	console.log("PASO")
-		write_box.value=""
-		bigger_display.scrollTop = bigger_display.scrollHeight
-
-	})
-}
-
-function create_element_local(id, nick, text){
-	var li = document.createElement("li")
-	const content = id + " === " + nick
-	const  result = document.createElement("div")
-
-	li.appendChild(document.createTextNode(content))
-	if(text.endsWith(".jpg")){
-		var imagen = document.createElement("img")
-		imagen.src = content
-		li.appendChild(imagen)
-	}
-	else{
-		li.appendChild(document.createTextNode(text))
-	
-	}
-    result.setAttribute(li) 
-    console.log(result)
-
-    display.appendChild(result)
-    return result
-}
-
-setInterval(function(){
-  get_messages()
-  console.log("")
-}, 2000)
-
+setInterval(function() {
+    get_messages()
+}, 5000);
