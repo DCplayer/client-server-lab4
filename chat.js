@@ -1,8 +1,18 @@
 
 const url = 'http://34.210.35.174:7000'
 const message_section = document.getElementById('chatContent')
-const message = documnet.getElementById('text')
+const message = document.getElementById('text')
+const button = document.getElementById('button').addEventListener("click", function(){
+send_message()
+})
 
+message.addEventListener("keypress", function(e){
+	var keyCode = e.keyCode; 
+	if(keyCode == 13){
+		console.log("enter")
+		send_message(); 
+	}
+})
 
 function get_messages(){
 	fetch(url)
@@ -34,11 +44,14 @@ function create_post(content){
 }
 
 function send_message(){
-	var nick = 'DC'
-	var id = '15151'
-	var text = message.value; 
+	var obj = '{'
+       +'"student_id" : "15151",'
+       +'"text"  : '+ message.value +','
+       +'"nick" : DC'
+       +'}';
+    console.log(obj)
+    get_messages();
 
-	 
 }
 
 setInterval(function() {
