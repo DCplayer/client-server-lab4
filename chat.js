@@ -44,12 +44,16 @@ function create_post(content){
 }
 
 function send_message(){
-	var obj = '{'
-       +'"student_id" : "15151",'
-       +'"text"  : '+ message.value +','
-       +'"nick" : DC'
-       +'}';
-    console.log(obj)
+	var data = new FormData();
+	data.append('student_id', '15151')
+	data.append('text', message.value)
+	data.append('nick', 'DC')
+	
+    console.log(data)
+
+    var request = new XMLHttpRequest(); 
+    request.open("POST", url)
+    request.send(data)
     get_messages();
 
 }
