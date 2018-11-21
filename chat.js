@@ -25,20 +25,31 @@ function get_messages(){
 		message_section.innerHTML = ""; 
 		for (var i = 0; i< myJson.length; i++){
 			//create element post and fill it up D:
-			var post = document.createTextNode(myJson[i].student_id + '-'+ myJson[i].nick + ': ' + myJson[i].text) 
-			var div = create_post(post); 
-
+			var post = document.createTextNode(myJson[i].student_id + '-'+ myJson[i].nick + ': ' + myJson[i].text)
+			let number = 1; 
+			if(myJson[i].student_id == '15151'){
+				number = 2; 
+			} 
+			console.log(number)
+			var div = create_post(post, number); 
 			message_section.appendChild(div); 
 		}
 	});
 }
 
-function create_post(content){
+function create_post(content, number){
 	var post_ccl = document.createElement('div')
+	let color = '#87CEEB'
 	post_ccl.style.width = '60%'
+	post_ccl.style.padding = '10px'
+	post_ccl.style.margin = '5px 0px'
 	post_ccl.style.height = 'auto'
 	post_ccl.style.borderRadius = '10px'
-
+	if(number === 2){
+		color = '#90EE90'
+		post_ccl.style.margin = '5px 0px 5px 100px'
+	}
+	post_ccl.style.background = color 
 	post_ccl.appendChild(content)
 	return post_ccl
 }
